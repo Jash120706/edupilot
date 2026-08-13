@@ -2,10 +2,8 @@ pipeline {
     agent any
 
     stages {
-
         stage('Build and Deploy') {
             steps {
-
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'dockerhub-credentials',
@@ -13,18 +11,18 @@ pipeline {
                         passwordVariable: 'DOCKER_PASSWORD'
                     )
                 ]) {
-
                     sh '''
+                        cd EDUCOPILOT
+
                         echo "$DOCKER_PASSWORD" | docker login \
                             -u "$DOCKER_USERNAME" \
                             --password-stdin
 
                         chmod +x build.sh
-
                         ./build.sh
                     '''
                 }
             }
         }
     }
-}
+}       
